@@ -16,11 +16,11 @@ public class RegExprTests
     [Fact]
     public void Resolution_try_parse()
     {
-        string resolution = "1920x1080";
+        var resolutions = new List<string> { "1920x1080", "1900x1911, 2910x4000"};
         // Act
-        var parsed = RegExpr.Resolution(resolution);
+        var parsed = RegExpr.Resolution(resolutions);
 
         // Assert
-        parsed.Should().BeEquivalentTo(new[] {(1920, 1080)});
+        parsed.Should().BeEquivalentTo(new[] {(1920, 1080), (1900, 1911), (2910, 4000)});
     }
 }

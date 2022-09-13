@@ -15,14 +15,17 @@ public static class RegExpr
         }
     }
 
-    public static IEnumerable<(int width, int height)> Resolution(string resolutions)
+    public static IEnumerable<(int width, int height)> Resolution(IEnumerable<string> resolutions)
     {
         string pattern = @"((?<width>\d+)x(?<height>\d+))+";
-        foreach (Match match in Regex.Matches(resolutions, pattern,
-                     RegexOptions.None,
-                     TimeSpan.FromSeconds(1)))
+        foreach (string line in resolutions)
         {
-            yield return ( Int32.Parse(match.Result("${width}")), Int32.Parse(match.Result("${height}")) );
+            foreach (Match match in Regex.Matches(line, pattern,
+                         RegexOptions.None,
+                         TimeSpan.FromSeconds(1)))
+            {
+                yield return (Int32.Parse(match.Result("${width}")), Int32.Parse(match.Result("${height}")));
+            }
         }
     }
 
