@@ -29,7 +29,17 @@ public static class RegExpr
         }
     }
 
-    public static IEnumerable<string> InnerText(string html, string tag) => throw new NotImplementedException();
+    public static IEnumerable<string> InnerText(string html, string tag)
+    {
+        // adapted from https://stackoverflow.com/a/21709398
+        string pattern = @"<(" + tag + @")(?:\s+[^>]+)?>(.+?)<\/\1>";
+        foreach (Match match in Regex.Matches(html, pattern,
+                     RegexOptions.None,
+                     TimeSpan.FromSeconds(1)))
+        {
+            yield return Regex.Replace(match.Groups[2].Value, "<.*?>", "");
+        }
+    }
 
     public static IEnumerable<(Uri url, string title)> Urls(string html) => throw new NotImplementedException();
 }
